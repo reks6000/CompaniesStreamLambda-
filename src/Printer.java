@@ -11,13 +11,11 @@ public class Printer {
     public static void print(List<Company> companies) throws Exception{
         System.out.println("All companies:");
         companies.
-                stream().
                 forEach(company -> System.out.println(" " + company.getNameShort() + " - " + company.getEgrulDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
 
         System.out.println("\nAll overdue securities:");
         ArrayList<String> result_old_securities = new ArrayList<String>();
         companies.
-                stream().
                 forEach(company -> company.getSecurities().
                         stream().
                         filter(securitie -> securitie.getDateTo().compareTo(LocalDate.now()) < 0).
@@ -37,7 +35,7 @@ public class Printer {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         boolean exit_flag = true;
         while (exit_flag) {
-            System.out.println("\nPlease enter request:");
+            System.out.println("\nPlease enter request (date, currency code, exit):");
             String request = reader.readLine();
             String requestType = new RequestValidator().validate(request);
             switch (requestType) {
@@ -67,7 +65,6 @@ public class Printer {
                     ArrayList<String> result_currency = new ArrayList<String>();
                     System.out.println("All securities with this currency:");
                     companies.
-                            stream().
                             forEach(company -> company.getSecurities().
                                     stream().
                                     filter(securitie -> securitie.getCurrencyCode().equals(request)).

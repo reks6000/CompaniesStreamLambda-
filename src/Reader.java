@@ -2,9 +2,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,12 @@ import java.util.Scanner;
 public class Reader {
 
     public static List<Company> read() throws Exception{
-        String filepath = "test.json";
+        BufferedReader filepath_reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Please, enter filepath (press enter for default):");
+        String filepath = filepath_reader.readLine();
+        if (filepath.isEmpty()) {
+            filepath = "test.json";
+        }
         File read_file = new File(filepath);
         Scanner input;
         try {
@@ -32,7 +36,7 @@ public class Reader {
         try {
             companies.add(gson.fromJson(reader, Company.class));
         } catch (JsonSyntaxException e) {
-
+            System.err.println("Warning: file isn't single json element");
         }
         //Штатный случай с массивом json объектов, иначе выкинет warning, но работать продолжит
         try {
@@ -48,7 +52,7 @@ public class Reader {
                     System.err.println("Error: file is damaged, important information is missing");
                     throw new Error();
                 }
-                company.improve();
+                company.improve(true);
             }
             //На случай пустого файла
         } catch (NullPointerException e) {

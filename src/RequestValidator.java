@@ -38,12 +38,16 @@ public class RequestValidator {
 
     public String validate(String request) {
         this.request = request;
+        String result;
         if (isExit()) {
-            return "exit";
+            result = "exit";
         } else if (isCurrency()) {
-            return "currency";
-        } else if (isDate())
-            return "date";
-        return "error";
+            result = "currency";
+        } else if (isDate()) {
+            result = "date";
+        } else {
+            result = "error";
+        }
+        return result;
     }
 }
